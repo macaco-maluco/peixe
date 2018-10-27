@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import './Game.css'
 
 import createLights from './createLights'
+import createFish from './createFish'
 
 export default class Game extends Component {
   constructor(props) {
@@ -27,24 +28,16 @@ export default class Game extends Component {
 
     window.addEventListener('resize', handleWindowResize, false)
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshPhongMaterial({
-      color: 0x00ff00,
-      transparent: true,
-      opacity: 0.6,
-      shading: THREE.FlatShading,
-    })
-
-    const cube = new THREE.Mesh(geometry, material)
-    scene.add(cube)
+    const fish = createFish()
+    scene.add(fish)
 
     createLights().forEach(light => scene.add(light))
 
     camera.position.z = 5
 
     function animate() {
-      cube.rotation.y -= 0.01
-      cube.rotation.x -= 0.01
+      fish.rotation.y -= 0.01
+      fish.rotation.x -= 0.01
 
       requestAnimationFrame(animate)
       renderer.render(scene, camera)
