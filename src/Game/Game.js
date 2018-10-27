@@ -2,6 +2,8 @@ import React, { Component, createRef } from 'react'
 import * as THREE from 'three'
 import './Game.css'
 
+import createLights from './createLights'
+
 export default class Game extends Component {
   constructor(props) {
     super(props)
@@ -16,13 +18,24 @@ export default class Game extends Component {
     renderer.setSize(window.innerWidth, window.innerHeight)
 
     const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+    const material = new THREE.MeshPhongMaterial({
+      color: 0x00ff00,
+      transparent: true,
+      opacity: 0.6,
+      shading: THREE.FlatShading,
+    })
+
     const cube = new THREE.Mesh(geometry, material)
     scene.add(cube)
+
+    createLights().forEach(light => scene.add(light))
 
     camera.position.z = 5
 
     function animate() {
+      cube.rotation.y -= 0.01
+      cube.rotation.x -= 0.01
+
       requestAnimationFrame(animate)
       renderer.render(scene, camera)
     }
