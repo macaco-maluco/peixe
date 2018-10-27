@@ -34,10 +34,12 @@ export default class Game extends Component {
     createLights().forEach(light => scene.add(light))
 
     camera.position.z = 5
+    fish.rotation.x = 0.3
+    fish.rotation.y = 1
 
     function animate() {
       fish.rotation.y -= 0.01
-      fish.rotation.x -= 0.01
+      // fish.rotation.x -= 0.01
 
       requestAnimationFrame(animate)
       renderer.render(scene, camera)
