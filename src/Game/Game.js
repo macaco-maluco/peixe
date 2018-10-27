@@ -17,6 +17,16 @@ export default class Game extends Component {
     const renderer = new THREE.WebGLRenderer({ canvas: this.ref.current, antialias: true, alpha: true })
     renderer.setSize(window.innerWidth, window.innerHeight)
 
+    function handleWindowResize() {
+      const height = window.innerHeight
+      const width = window.innerWidth
+      renderer.setSize(width, height)
+      camera.aspect = width / height
+      camera.updateProjectionMatrix()
+    }
+
+    window.addEventListener('resize', handleWindowResize, false)
+
     const geometry = new THREE.BoxGeometry(1, 1, 1)
     const material = new THREE.MeshPhongMaterial({
       color: 0x00ff00,
