@@ -1,16 +1,22 @@
 import { Vector3 } from 'three'
 
-const NEIGHBOUR_RADIUS = 5
-const SEPARATION_WEIGHT = 5
-const ALIGNMENT_WEIGHT = 2
-const COHESION_WEIGHT = 2
+const NEIGHBOUR_RADIUS = 10000
+const SEPARATION_WEIGHT = 3.5
+const ALIGNMENT_WEIGHT = 0.2
+const COHESION_WEIGHT = 4
+
+export const MAX_SPEED = 0.2
 
 export default function flock(boid, neighbours) {
   const separation = separate(boid, neighbours).multiplyScalar(SEPARATION_WEIGHT)
   const alignment = align(boid, neighbours).multiplyScalar(ALIGNMENT_WEIGHT)
   const cohesion = cohere(boid, neighbours).multiplyScalar(COHESION_WEIGHT)
 
-  const acceleration = separation.add(alignment).add(cohesion)
+  const acceleration = separation
+    .add(alignment)
+    .add(cohesion)
+    // Slow the acceleration down by a big factor
+    .divideScalar(200)
 
   return { acceleration, separation, alignment, cohesion }
 }
@@ -30,10 +36,12 @@ function cohere(boid, neighbours) {
     .divideScalar(flockMembers.length)
     .normalize()
 
-  return centerOfMass
+  const cohesion = centerOfMass
     .clone()
     .sub(boid.position)
     .normalize()
+
+  return cohesion
 }
 
 function align(boid, neighbours) {

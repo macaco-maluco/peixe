@@ -5,9 +5,7 @@ import './Game.css'
 import createLights from './createLights'
 import createFish from './createFish'
 
-import flock from '../flock'
-
-const MAX_SPEED = 0.1
+import flock, { MAX_SPEED } from '../flock'
 
 export default class Game extends Component {
   constructor(props) {
@@ -31,7 +29,7 @@ export default class Game extends Component {
     }
     window.addEventListener('resize', handleWindowResize, false)
 
-    camera.position.z = 40
+    camera.position.z = 30
 
     createLights().forEach(light => scene.add(light))
 
