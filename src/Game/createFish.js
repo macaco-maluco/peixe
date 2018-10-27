@@ -12,6 +12,7 @@ const fishes = [
     tailColor: 0xffe700,
     flapLength: 0.3,
     flapColor: 0xffe700,
+    flapType: 'bottom',
     eyeColor: 0x75253c,
   },
   {
@@ -23,17 +24,19 @@ const fishes = [
     tailColor: 0x4a2ee7,
     flapLength: 0.25,
     flapColor: 0x4a2ee7,
+    flapType: 'bottom',
     eyeColor: 0x5c47a2,
   },
   {
     headLength: 1.0,
-    headColor: 0xfb7813,
+    headColor: 0x7f724e,
     bodyLength: 0,
     tailLength: 0.45,
-    tailColor: 0x4a2ee7,
-    flapLength: 0.25,
-    flapColor: 0x4a2ee7,
-    eyeColor: 0x5c47a2,
+    tailColor: 0x271e0b,
+    flapLength: 0.35,
+    flapColor: 0x1a634d,
+    flapType: 'both',
+    eyeColor: 0x653412,
   },
 ]
 
@@ -116,6 +119,40 @@ function createTail(fish) {
 }
 
 function createFlap(fish) {
+  if (fish.flapType === 'both') {
+    const group = new THREE.Group()
+
+    const width = 3 * fish.flapLength
+
+    const topGeometry = new THREE.BoxGeometry(width, 0.5 * fish.flapLength, 0.05)
+    const topMaterial = new THREE.MeshPhongMaterial({
+      color: fish.flapColor,
+      shading: THREE.FlatShading,
+    })
+
+    const topMesh = new THREE.Mesh(topGeometry, topMaterial)
+    topMesh.rotation.z = 0.8
+    topMesh.position.y = 0.5
+    topMesh.position.x = -width / 2 + 0.1
+
+    group.add(topMesh)
+
+    const bottomGeometry = new THREE.BoxGeometry(width, 0.5 * fish.flapLength, 0.05)
+    const bottomMaterial = new THREE.MeshPhongMaterial({
+      color: fish.flapColor,
+      shading: THREE.FlatShading,
+    })
+
+    const bottomMesh = new THREE.Mesh(bottomGeometry, bottomMaterial)
+    bottomMesh.rotation.z = -0.8
+    bottomMesh.position.y = -0.5
+    bottomMesh.position.x = -width / 2 + 0.1
+
+    group.add(bottomMesh)
+
+    return group
+  }
+
   const geometry = new THREE.BoxGeometry(fish.bodyLength * 0.2, fish.flapLength, 0.25)
   const material = new THREE.MeshPhongMaterial({
     color: fish.flapColor,
