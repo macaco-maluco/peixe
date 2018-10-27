@@ -1,6 +1,6 @@
 import { Vector3 } from 'three'
 
-const NEIGHBOUR_RADIUS = 10000
+const NEIGHBOUR_RADIUS = 100
 const SEPARATION_WEIGHT = 3.5
 const ALIGNMENT_WEIGHT = 0.2
 const COHESION_WEIGHT = 4
