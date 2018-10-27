@@ -29,5 +29,7 @@ export default function createLights() {
   shadowLight.shadow.mapSize.width = 2048
   shadowLight.shadow.mapSize.height = 2048
 
-  return [hemisphereLight, shadowLight]
+  const ambientLight = new THREE.AmbientLight(0xdc8874, 0.5)
+
+  return [hemisphereLight, shadowLight, ambientLight]
 }
