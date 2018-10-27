@@ -5,6 +5,10 @@ import './Game.css'
 import createLights from './createLights'
 import createFish from './createFish'
 
+import flock from '../flock'
+
+const MAX_SPEED = 0.1
+
 export default class Game extends Component {
   constructor(props) {
     super(props)
@@ -25,21 +29,38 @@ export default class Game extends Component {
       camera.aspect = width / height
       camera.updateProjectionMatrix()
     }
-
     window.addEventListener('resize', handleWindowResize, false)
 
-    const fish = createFish()
-    scene.add(fish)
+    camera.position.z = 20
 
     createLights().forEach(light => scene.add(light))
 
-    camera.position.z = 5
-    fish.rotation.x = 0.3
-    fish.rotation.y = 1
+    const fishes = []
+    for (var i = 0; i < 20; i++) {
+      fishes.push({
+        position: new THREE.Vector3(Math.random() * 10 - 5, Math.random() * 10 - 5, 0),
+        velocity: new THREE.Vector3(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, 0),
+      })
+    }
+
+    const fishMeshes = fishes.map(createFish)
+
+    fishMeshes.forEach(fish => scene.add(fish))
 
     function animate() {
-      fish.rotation.y -= 0.01
-      // fish.rotation.x -= 0.01
+      fishes.forEach((fish, index) => {
+        const neighbours = fishes.filter((fish, neighbourIndex) => neighbourIndex !== index)
+        const { acceleration } = flock(fish, neighbours)
+        fish.velocity.add(acceleration).clampScalar(-MAX_SPEED, MAX_SPEED)
+        fish.position.add(fish.velocity)
+
+        const mesh = fishMeshes[index]
+        mesh.position.x = fish.position.x
+        mesh.position.y = fish.position.y
+      })
+
+      // camera.position.x = fishes[0].position.x
+      // camera.position.y = fishes[0].position.y
 
       requestAnimationFrame(animate)
       renderer.render(scene, camera)
