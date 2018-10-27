@@ -1,8 +1,8 @@
 import { Vector3 } from 'three'
 
 const NEIGHBOUR_RADIUS = 5
-const SEPARATION_WEIGHT = 2
-const ALIGNMENT_WEIGHT = 4
+const SEPARATION_WEIGHT = 5
+const ALIGNMENT_WEIGHT = 2
 const COHESION_WEIGHT = 2
 
 export default function flock(boid, neighbours) {

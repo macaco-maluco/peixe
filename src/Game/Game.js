@@ -36,7 +36,7 @@ export default class Game extends Component {
     createLights().forEach(light => scene.add(light))
 
     const fishes = []
-    for (var i = 0; i < 200; i++) {
+    for (var i = 0; i < 50; i++) {
       fishes.push({
         position: new THREE.Vector3(Math.random() * 40 - 20, Math.random() * 40 - 20, 0),
         velocity: new THREE.Vector3(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, 0),
