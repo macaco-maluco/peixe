@@ -31,19 +31,20 @@ export default class Game extends Component {
     }
     window.addEventListener('resize', handleWindowResize, false)
 
-    camera.position.z = 20
+    camera.position.z = 40
 
     createLights().forEach(light => scene.add(light))
 
     const fishes = []
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 200; i++) {
       fishes.push({
-        position: new THREE.Vector3(Math.random() * 10 - 5, Math.random() * 10 - 5, 0),
+        position: new THREE.Vector3(Math.random() * 40 - 20, Math.random() * 40 - 20, 0),
         velocity: new THREE.Vector3(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, 0),
+        fishType: Math.floor(Math.random() * 3),
       })
     }
 
-    const fishMeshes = fishes.map(createFish)
+    const fishMeshes = fishes.map(({ fishType }) => createFish(fishType))
 
     fishMeshes.forEach(fish => scene.add(fish))
 
@@ -54,13 +55,13 @@ export default class Game extends Component {
         fish.velocity.add(acceleration).clampScalar(-MAX_SPEED, MAX_SPEED)
         fish.position.add(fish.velocity)
 
+        const angle = new THREE.Vector2(fish.velocity.x, fish.velocity.y).angle() + Math.PI
+
         const mesh = fishMeshes[index]
         mesh.position.x = fish.position.x
         mesh.position.y = fish.position.y
+        mesh.rotation.z = angle
       })
-
-      // camera.position.x = fishes[0].position.x
-      // camera.position.y = fishes[0].position.y
 
       requestAnimationFrame(animate)
       renderer.render(scene, camera)

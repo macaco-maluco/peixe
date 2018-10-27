@@ -40,8 +40,8 @@ const fishes = [
   },
 ]
 
-export default function createFish() {
-  const fish = fishes[2]
+export default function createFish(fishType = 2) {
+  const fish = fishes[fishType]
 
   const group = new THREE.Group()
   group.add(createHead(fish))

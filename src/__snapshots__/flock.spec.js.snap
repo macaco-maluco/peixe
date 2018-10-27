@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should flock 1`] = `
+Object {
+  "acceleration": Vector3 {
+    "x": 4.440892098500626e-16,
+    "y": 2.7755575615628914e-17,
+    "z": 0,
+  },
+  "alignment": Vector3 {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+  },
+  "cohesion": Vector3 {
+    "x": 1.9930915164897596,
+    "y": 0.16609095970747997,
+    "z": 0,
+  },
+  "separation": Vector3 {
+    "x": 4.440892098500626e-16,
+    "y": 2.7755575615628914e-17,
+    "z": 0,
+  },
+}
+`;
