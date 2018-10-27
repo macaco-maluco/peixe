@@ -1,10 +1,11 @@
-import React, { Component } from "react";
-import "./App.css";
+import React, { Component } from 'react'
+import './App.css'
+import Game from './Game'
 
 class App extends Component {
   render() {
-    return <div>Hello world</div>;
+    return <Game />
   }
 }
 
-export default App;
+export default App
