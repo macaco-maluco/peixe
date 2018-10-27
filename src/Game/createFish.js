@@ -37,16 +37,39 @@ function createBody() {
 }
 
 function createTail() {
-  const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5)
-  const material = new THREE.MeshPhongMaterial({
+  const group = new THREE.Group()
+
+  const baseGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5)
+  const baseMaterial = new THREE.MeshPhongMaterial({
     color: 0xffe700,
     shading: THREE.FlatShading,
   })
 
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.position.x = 2.25
+  const baseMesh = new THREE.Mesh(baseGeometry, baseMaterial)
+  group.add(baseMesh)
 
-  return mesh
+  const topGeometry = new THREE.BoxGeometry(1.3, 0.25, 0.05)
+  const topMaterial = new THREE.MeshPhongMaterial({
+    color: 0xffe700,
+    shading: THREE.FlatShading,
+  })
+
+  const topMesh = new THREE.Mesh(topGeometry, topMaterial)
+  topMesh.rotation.z = -0.4
+  group.add(topMesh)
+
+  const bottomGeometry = new THREE.BoxGeometry(1.3, 0.25, 0.05)
+  const bottomMaterial = new THREE.MeshPhongMaterial({
+    color: 0xffe700,
+    shading: THREE.FlatShading,
+  })
+
+  const bottomMesh = new THREE.Mesh(bottomGeometry, bottomMaterial)
+  bottomMesh.rotation.z = 0.4
+  group.add(bottomMesh)
+
+  group.position.x = 2.25
+  return group
 }
 
 function createFlap() {
