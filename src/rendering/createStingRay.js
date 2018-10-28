@@ -22,7 +22,7 @@ function createBody() {
 }
 
 function createTail() {
-  const geometry = new THREE.BoxGeometry(1.5, 0.1, 0.1)
+  const geometry = new THREE.BoxGeometry(2.5, 0.1, 0.1)
   const material = new THREE.MeshPhongMaterial({
     color: 0x191d24,
     flatShading: true,
