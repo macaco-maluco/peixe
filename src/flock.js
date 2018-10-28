@@ -1,10 +1,11 @@
 import { Vector3 } from 'three'
 
-const NEIGHBOUR_RADIUS = 20
+const NEIGHBOUR_RADIUS = 30
+const TARGET_RADIUS = 5
 const SEPARATION_WEIGHT = 3.6
-const ALIGNMENT_WEIGHT = 1
+const ALIGNMENT_WEIGHT = 0.1
 const COHESION_WEIGHT = 4
-const TARGET_WEIGHT = 5
+const TARGET_WEIGHT = 0.5
 
 export const MAX_SPEED = 0.2
 
@@ -27,7 +28,7 @@ export default function flock(boid, neighbours, leader) {
 function target(boid, leader) {
   const distance = boid.position.distanceTo(leader.position)
 
-  if (!leader || distance < 0 || distance > NEIGHBOUR_RADIUS) {
+  if (!leader || distance < 0 || distance > TARGET_RADIUS) {
     return new Vector3(0, 0, 0)
   }
 

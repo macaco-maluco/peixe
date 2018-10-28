@@ -31,7 +31,7 @@ export default class Game extends Component {
     }
     window.addEventListener('resize', handleWindowResize, false)
 
-    camera.position.z = 40
+    camera.position.z = 20
 
     createLights().forEach(light => scene.add(light))
 
@@ -42,7 +42,7 @@ export default class Game extends Component {
     scene.add(playerMesh)
 
     const player = {
-      position: new THREE.Vector3(0, 100, 0),
+      position: new THREE.Vector3(0, 0, 0),
     }
 
     const fishes = []
@@ -71,14 +71,7 @@ export default class Game extends Component {
         mesh.position.x = fish.position.x
         mesh.position.y = fish.position.y
         mesh.rotation.z = angle
-
-        // if (index === 0) {
-        //   camera.position.x = fish.position.x
-        //   camera.position.y = fish.position.y
-        // }
       })
-
-      player.position.y -= 0.1
 
       camera.position.x = player.position.x
       camera.position.y = player.position.y
