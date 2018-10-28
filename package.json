@@ -9,9 +9,7 @@
     "three": "^0.97.0"
   },
   "scripts": {
-    "heroku-postbuild": "react-scripts build",
-    "start": "node index.js",
-    "dev": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
