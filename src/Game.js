@@ -91,7 +91,7 @@ export default class Game extends Component {
       worldColision(this.player)
 
       camera.position.x = this.player.position.x
-      camera.position.y = this.player.position.y
+      camera.position.y = this.player.position.y - 55
 
       const playerAngle = new THREE.Vector2(this.player.velocity.x, this.player.velocity.y).angle() + Math.PI
 

@@ -1,6 +1,10 @@
 import * as THREE from 'three'
 
+const COLOR = 0xe4bd11
+
 export default function createPlayer() {
+  const outerGroup = new THREE.Group()
+
   const group = new THREE.Group()
   group.add(createBody())
   group.add(createHead())
@@ -12,14 +16,17 @@ export default function createPlayer() {
   group.scale.x = 2.5
   group.scale.y = 2.5
   group.scale.z = 2.5
+  group.rotation.x = Math.PI / 2
 
-  return group
+  outerGroup.add(group)
+
+  return outerGroup
 }
 
 function createBody() {
   const geometry = new THREE.BoxGeometry(2.5, 1.0, 1.5)
   const material = new THREE.MeshPhongMaterial({
-    color: 0xffd200,
+    color: COLOR,
     flatShading: true,
   })
 
@@ -31,7 +38,7 @@ function createBody() {
 function createHead() {
   const geometry = new THREE.BoxGeometry(1.5, 0.5, 1)
   const material = new THREE.MeshPhongMaterial({
-    color: 0xffd200,
+    color: COLOR,
     flatShading: true,
   })
 
@@ -45,7 +52,7 @@ function createHead() {
 function createTop() {
   const geometry = new THREE.BoxGeometry(0.25, 1, 0.25)
   const material = new THREE.MeshPhongMaterial({
-    color: 0xffd200,
+    color: COLOR,
     flatShading: true,
   })
 
@@ -59,7 +66,7 @@ function createTop() {
 function createTopA() {
   const geometry = new THREE.BoxGeometry(1, 0.25, 0.25)
   const material = new THREE.MeshPhongMaterial({
-    color: 0xffd200,
+    color: COLOR,
     flatShading: true,
   })
 
@@ -73,7 +80,7 @@ function createTopA() {
 function createPropulsion() {
   const geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2)
   const material = new THREE.MeshPhongMaterial({
-    color: 0xffd200,
+    color: COLOR,
     flatShading: true,
   })
 
@@ -86,7 +93,7 @@ function createPropulsion() {
 function createPropulsionA() {
   const geometry = new THREE.BoxGeometry(0.25, 1, 0.25)
   const material = new THREE.MeshPhongMaterial({
-    color: 0xffd200,
+    color: COLOR,
     flatShading: true,
   })
 

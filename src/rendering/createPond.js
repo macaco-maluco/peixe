@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-const WALL_HEIGHT = 4
+const WALL_HEIGHT = 10
 const WALL_COLOR = 0x142b38
 
 export default function createPond(worldWidth, worldHeight) {
