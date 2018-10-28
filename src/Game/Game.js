@@ -4,6 +4,7 @@ import './Game.css'
 
 import createLights from './createLights'
 import createFish from './createFish'
+import createPond from './createPond'
 
 import flock, { MAX_SPEED } from '../flock'
 
@@ -17,7 +18,7 @@ export default class Game extends Component {
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
 
-    const renderer = new THREE.WebGLRenderer({ canvas: this.ref.current, antialias: true, alpha: true })
+    const renderer = new THREE.WebGLRenderer({ canvas: this.ref.current, antialias: true })
     renderer.setSize(window.innerWidth, window.innerHeight)
 
     function handleWindowResize() {
@@ -32,6 +33,9 @@ export default class Game extends Component {
     camera.position.z = 30
 
     createLights().forEach(light => scene.add(light))
+
+    const pond = createPond()
+    scene.add(pond)
 
     const fishes = []
     for (var i = 0; i < 20; i++) {
@@ -59,6 +63,11 @@ export default class Game extends Component {
         mesh.position.x = fish.position.x
         mesh.position.y = fish.position.y
         mesh.rotation.z = angle
+
+        if (index === 0) {
+          camera.position.x = fish.position.x
+          camera.position.y = fish.position.y
+        }
       })
 
       requestAnimationFrame(animate)
