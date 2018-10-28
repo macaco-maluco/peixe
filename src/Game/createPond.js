@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
-const WORLD_WIDTH = 40
-const WORLD_HEIGHT = 40
+const WORLD_WIDTH = 80
+const WORLD_HEIGHT = 80
 
 export default function createPond() {
   const group = new THREE.Group()
@@ -12,7 +12,7 @@ export default function createPond() {
 }
 
 function createWater() {
-  const geometry = new THREE.PlaneBufferGeometry(200, 200, WORLD_WIDTH - 1, WORLD_HEIGHT - 1)
+  const geometry = new THREE.PlaneBufferGeometry(400, 400, WORLD_WIDTH - 1, WORLD_HEIGHT - 1)
 
   const vertices = geometry.attributes.position.array
   for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
