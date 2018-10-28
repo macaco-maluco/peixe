@@ -2,6 +2,7 @@ import React, { Component, createRef } from 'react'
 
 import setupRenderer from './rendering/setupRenderer'
 import createFish from './rendering/createFish'
+import createStingRay from './rendering/createStingRay'
 
 export default class Preview extends Component {
   constructor(props) {
@@ -14,13 +15,11 @@ export default class Preview extends Component {
 
     camera.position.z = 4
 
-    const fishMesh = createFish(this.props.fish)
-    scene.add(fishMesh)
-
-    console.log(fishMesh)
+    const mesh = this.props.stingRay ? createStingRay() : createFish(this.props.fish)
+    scene.add(mesh)
 
     function animate() {
-      fishMesh.rotation.y -= -0.01
+      mesh.rotation.y -= -0.01
 
       renderer.render(scene, camera)
 
