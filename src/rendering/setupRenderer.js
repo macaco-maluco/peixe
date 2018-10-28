@@ -17,7 +17,7 @@ export default function setupRenderer(canvas) {
 
   window.addEventListener('resize', handleWindowResize, false)
 
-  camera.position.z = 20
+  camera.position.z = 40
 
   createLights().forEach(light => scene.add(light))
 

@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react'
 import * as THREE from 'three'
 
 import setupRenderer from './rendering/setupRenderer'
-import createFish from './rendering/createFish'
+import createCreature from './rendering/createCreature'
 import createPond from './rendering/createPond'
 import createPlayer from './rendering/createPlayer'
 
@@ -17,7 +17,10 @@ export default class Game extends Component {
   componentDidMount() {
     const { camera, scene, renderer } = setupRenderer(this.ref.current)
 
-    const pondMesh = createPond()
+    const worldWidth = 200
+    const worldHeight = 200
+
+    const pondMesh = createPond(worldWidth, worldHeight)
     scene.add(pondMesh)
 
     const playerMesh = createPlayer()
@@ -28,31 +31,55 @@ export default class Game extends Component {
       velocity: new THREE.Vector3(0.01, 0.01, 0),
     }
 
-    const fishes = []
+    const creatures = []
     for (var i = 0; i < 50; i++) {
-      fishes.push({
-        position: new THREE.Vector3(Math.random() * 40 - 20, Math.random() * 40 - 20, 0),
+      creatures.push({
+        position: new THREE.Vector3(
+          Math.random() * worldWidth - worldWidth / 2,
+          Math.random() * worldHeight - worldHeight / 2,
+          0,
+        ),
         velocity: new THREE.Vector3(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, 0),
-        fishType: Math.floor(Math.random() * 3),
+        creatureType: Math.floor(Math.random() * 4),
       })
     }
 
-    const fishMeshes = fishes.map(({ fishType }) => createFish(fishType))
+    const creatureMeshes = creatures.map(({ creatureType }) => createCreature(creatureType))
 
-    fishMeshes.forEach(fish => scene.add(fish))
+    creatureMeshes.forEach(creature => scene.add(creature))
 
     function animate() {
-      fishes.forEach((fish, index) => {
-        const neighbours = fishes.filter((fish, neighbourIndex) => neighbourIndex !== index)
-        const { acceleration } = flock(fish, neighbours, player)
-        fish.velocity.add(acceleration).clampScalar(-MAX_SPEED, MAX_SPEED)
-        fish.position.add(fish.velocity)
+      creatures.forEach((creature, index) => {
+        const neighbours = creatures.filter((creature, neighbourIndex) => neighbourIndex !== index)
+        const { acceleration } = flock(creature, neighbours, player)
+        creature.velocity.add(acceleration).clampScalar(-MAX_SPEED, MAX_SPEED)
+        creature.position.add(creature.velocity)
 
-        const angle = new THREE.Vector2(fish.velocity.x, fish.velocity.y).angle() + Math.PI
+        if (creature.position.x < -worldWidth / 2) {
+          creature.velocity.x = MAX_SPEED
+          creature.velocity.y = 0
+        }
 
-        const mesh = fishMeshes[index]
-        mesh.position.x = fish.position.x
-        mesh.position.y = fish.position.y
+        if (creature.position.x > worldWidth / 2) {
+          creature.velocity.x = -MAX_SPEED
+          creature.velocity.y = 0
+        }
+
+        if (creature.position.y < -worldWidth / 2) {
+          creature.velocity.x = 0
+          creature.velocity.y = MAX_SPEED
+        }
+
+        if (creature.position.y > worldWidth / 2) {
+          creature.velocity.x = 0
+          creature.velocity.y = -MAX_SPEED
+        }
+
+        const angle = new THREE.Vector2(creature.velocity.x, creature.velocity.y).angle() + Math.PI
+
+        const mesh = creatureMeshes[index]
+        mesh.position.x = creature.position.x
+        mesh.position.y = creature.position.y
         mesh.rotation.z = angle
       })
 
