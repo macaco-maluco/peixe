@@ -11,7 +11,7 @@ class App extends Component {
       <Preview
         fish={parseInt(searchParams.get('fish'), 10)}
         stingRay={!!searchParams.get('stingRay')}
-        player={!!searchParams.get('fish') || searchParams.get('player')}
+        player={searchParams.get('player') === 'true'}
         rotate={searchParams.get('rotate') === 'true'}
       />
     ) : (
