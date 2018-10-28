@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import './App.css'
 import Game from './Game'
+import Preview from './Preview'
 
 class App extends Component {
   render() {
-    return <Game />
+    const searchParams = new URLSearchParams(window.location.search)
+    return searchParams.get('fish') ? <Preview fish={parseInt(searchParams.get('fish'), 10)} /> : <Game />
   }
 }
 

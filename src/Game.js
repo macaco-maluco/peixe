@@ -1,13 +1,12 @@
 import React, { Component, createRef } from 'react'
 import * as THREE from 'three'
-import './Game.css'
 
-import setupRenderer from './setupRenderer'
-import createFish from './createFish'
-import createPond from './createPond'
-import createPlayer from './createPlayer'
+import setupRenderer from './rendering/setupRenderer'
+import createFish from './rendering/createFish'
+import createPond from './rendering/createPond'
+import createPlayer from './rendering/createPlayer'
 
-import flock, { MAX_SPEED } from '../flock'
+import flock, { MAX_SPEED } from './flock'
 
 export default class Game extends Component {
   constructor(props) {
