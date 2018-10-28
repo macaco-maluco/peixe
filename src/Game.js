@@ -39,7 +39,7 @@ export default class Game extends Component {
         ),
         velocity: new THREE.Vector3(0, 0, 0),
 
-        creatureType: Math.floor(Math.random() * 4),
+        creatureType: Math.floor(Math.random() * 5),
       })
     }
 
