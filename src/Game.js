@@ -8,32 +8,27 @@ import createPlayer from './rendering/createPlayer'
 
 import flock, { MAX_SPEED } from './flock'
 
+import './Game.css'
+
+const worldWidth = 200
+const worldHeight = 200
+
 export default class Game extends Component {
   constructor(props) {
     super(props)
     this.ref = createRef()
-  }
-
-  componentDidMount() {
-    const { camera, scene, renderer } = setupRenderer(this.ref.current)
-
-    const worldWidth = 200
-    const worldHeight = 200
-
-    const pondMesh = createPond(worldWidth, worldHeight)
-    scene.add(pondMesh)
-
-    const playerMesh = createPlayer()
-    scene.add(playerMesh)
-
-    const player = {
-      position: new THREE.Vector3(0, 0, 0),
-      velocity: new THREE.Vector3(0.01, 0.01, 0),
+    this.state = {
+      score: 0,
     }
 
-    const creatures = []
+    this.player = {
+      position: new THREE.Vector3(0, 0, 0),
+      velocity: new THREE.Vector3(0.2, 0.4, 0),
+    }
+
+    this.creatures = []
     for (var i = 0; i < 50; i++) {
-      creatures.push({
+      this.creatures.push({
         position: new THREE.Vector3(
           Math.random() * worldWidth - worldWidth / 2,
           Math.random() * worldHeight - worldHeight / 2,
@@ -43,37 +38,29 @@ export default class Game extends Component {
         creatureType: Math.floor(Math.random() * 4),
       })
     }
+  }
 
-    const creatureMeshes = creatures.map(({ creatureType }) => createCreature(creatureType))
+  componentDidMount() {
+    const { camera, scene, renderer } = setupRenderer(this.ref.current)
+
+    const pondMesh = createPond(worldWidth, worldHeight)
+    scene.add(pondMesh)
+
+    const playerMesh = createPlayer()
+    scene.add(playerMesh)
+
+    const creatureMeshes = this.creatures.map(({ creatureType }) => createCreature(creatureType))
 
     creatureMeshes.forEach(creature => scene.add(creature))
 
-    function animate() {
-      creatures.forEach((creature, index) => {
-        const neighbours = creatures.filter((creature, neighbourIndex) => neighbourIndex !== index)
-        const { acceleration } = flock(creature, neighbours, player)
+    const animate = () => {
+      this.creatures.forEach((creature, index) => {
+        const neighbours = this.creatures.filter((creature, neighbourIndex) => neighbourIndex !== index)
+        const { acceleration } = flock(creature, neighbours, this.player)
         creature.velocity.add(acceleration).clampScalar(-MAX_SPEED, MAX_SPEED)
         creature.position.add(creature.velocity)
 
-        if (creature.position.x < -worldWidth / 2) {
-          creature.velocity.x = MAX_SPEED
-          creature.velocity.y = 0
-        }
-
-        if (creature.position.x > worldWidth / 2) {
-          creature.velocity.x = -MAX_SPEED
-          creature.velocity.y = 0
-        }
-
-        if (creature.position.y < -worldWidth / 2) {
-          creature.velocity.x = 0
-          creature.velocity.y = MAX_SPEED
-        }
-
-        if (creature.position.y > worldWidth / 2) {
-          creature.velocity.x = 0
-          creature.velocity.y = -MAX_SPEED
-        }
+        worldColision(creature)
 
         const angle = new THREE.Vector2(creature.velocity.x, creature.velocity.y).angle() + Math.PI
 
@@ -83,13 +70,23 @@ export default class Game extends Component {
         mesh.rotation.z = angle
       })
 
-      player.position.add(player.velocity)
+      const nearby = this.creatures.filter(creature => this.player.position.distanceTo(creature.position) < 20)
 
-      camera.position.x = player.position.x
-      camera.position.y = player.position.y
+      if (nearby.length !== this.state.score) {
+        this.setState({ score: nearby.length })
+      }
 
-      playerMesh.position.x = player.position.x
-      playerMesh.position.y = player.position.y
+      this.player.position.add(this.player.velocity)
+      worldColision(this.player)
+
+      camera.position.x = this.player.position.x
+      camera.position.y = this.player.position.y
+
+      const playerAngle = new THREE.Vector2(this.player.velocity.x, this.player.velocity.y).angle() + Math.PI
+
+      playerMesh.position.x = this.player.position.x
+      playerMesh.position.y = this.player.position.y
+      playerMesh.rotation.z = playerAngle
 
       renderer.render(scene, camera)
 
@@ -99,6 +96,23 @@ export default class Game extends Component {
   }
 
   render() {
-    return <canvas id="game" ref={this.ref} />
+    return (
+      <>
+        <div className="score">
+          {this.state.score} / {this.creatures.length}
+        </div>
+        <canvas id="game" ref={this.ref} />
+      </>
+    )
+  }
+}
+
+function worldColision(entity) {
+  if (entity.position.x < -worldWidth / 2 || entity.position.x > worldWidth / 2) {
+    entity.velocity.x = -entity.velocity.x
+  }
+
+  if (entity.position.y < -worldWidth / 2 || entity.position.y > worldWidth / 2) {
+    entity.velocity.y = -entity.velocity.y
   }
 }
