@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react'
 import * as THREE from 'three'
 import './Game.css'
 
-import createLights from './createLights'
+import setupRenderer from './setupRenderer'
 import createFish from './createFish'
 import createPond from './createPond'
 import createPlayer from './createPlayer'
@@ -16,27 +16,10 @@ export default class Game extends Component {
   }
 
   componentDidMount() {
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+    const { camera, scene, renderer } = setupRenderer(this.ref.current)
 
-    const renderer = new THREE.WebGLRenderer({ canvas: this.ref.current, antialias: true })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-
-    function handleWindowResize() {
-      const height = window.innerHeight
-      const width = window.innerWidth
-      renderer.setSize(width, height)
-      camera.aspect = width / height
-      camera.updateProjectionMatrix()
-    }
-    window.addEventListener('resize', handleWindowResize, false)
-
-    camera.position.z = 20
-
-    createLights().forEach(light => scene.add(light))
-
-    const pond = createPond()
-    scene.add(pond)
+    const pondMesh = createPond()
+    scene.add(pondMesh)
 
     const playerMesh = createPlayer()
     scene.add(playerMesh)
@@ -82,8 +65,9 @@ export default class Game extends Component {
       playerMesh.position.x = player.position.x
       playerMesh.position.y = player.position.y
 
-      requestAnimationFrame(animate)
       renderer.render(scene, camera)
+
+      requestAnimationFrame(animate)
     }
     animate()
   }
