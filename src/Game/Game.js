@@ -5,6 +5,7 @@ import './Game.css'
 import createLights from './createLights'
 import createFish from './createFish'
 import createPond from './createPond'
+import createPlayer from './createPlayer'
 
 import flock, { MAX_SPEED } from '../flock'
 
@@ -30,15 +31,22 @@ export default class Game extends Component {
     }
     window.addEventListener('resize', handleWindowResize, false)
 
-    camera.position.z = 30
+    camera.position.z = 40
 
     createLights().forEach(light => scene.add(light))
 
     const pond = createPond()
     scene.add(pond)
 
+    const playerMesh = createPlayer()
+    scene.add(playerMesh)
+
+    const player = {
+      position: new THREE.Vector3(0, 100, 0),
+    }
+
     const fishes = []
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 50; i++) {
       fishes.push({
         position: new THREE.Vector3(Math.random() * 40 - 20, Math.random() * 40 - 20, 0),
         velocity: new THREE.Vector3(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, 0),
@@ -53,7 +61,7 @@ export default class Game extends Component {
     function animate() {
       fishes.forEach((fish, index) => {
         const neighbours = fishes.filter((fish, neighbourIndex) => neighbourIndex !== index)
-        const { acceleration } = flock(fish, neighbours)
+        const { acceleration } = flock(fish, neighbours, player)
         fish.velocity.add(acceleration).clampScalar(-MAX_SPEED, MAX_SPEED)
         fish.position.add(fish.velocity)
 
@@ -64,11 +72,19 @@ export default class Game extends Component {
         mesh.position.y = fish.position.y
         mesh.rotation.z = angle
 
-        if (index === 0) {
-          camera.position.x = fish.position.x
-          camera.position.y = fish.position.y
-        }
+        // if (index === 0) {
+        //   camera.position.x = fish.position.x
+        //   camera.position.y = fish.position.y
+        // }
       })
+
+      player.position.y -= 0.1
+
+      camera.position.x = player.position.x
+      camera.position.y = player.position.y
+
+      playerMesh.position.x = player.position.x
+      playerMesh.position.y = player.position.y
 
       requestAnimationFrame(animate)
       renderer.render(scene, camera)
