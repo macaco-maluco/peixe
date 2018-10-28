@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 const WALL_HEIGHT = 4
-const WALL_COLOR = 0xbedb89
+const WALL_COLOR = 0x142b38
 
 export default function createPond(worldWidth, worldHeight) {
   const group = new THREE.Group()
