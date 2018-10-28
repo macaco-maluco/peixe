@@ -1,10 +1,11 @@
 import { Vector3 } from 'three'
 
-const NEIGHBOUR_RADIUS = 30
+const SEPARATE_RADIUS = 2
+const NEIGHBOUR_RADIUS = 10
 const TARGET_RADIUS = 5
-const SEPARATION_WEIGHT = 3.6
-const ALIGNMENT_WEIGHT = 0.1
-const COHESION_WEIGHT = 4
+const SEPARATION_WEIGHT = 2
+const ALIGNMENT_WEIGHT = 2
+const COHESION_WEIGHT = 0.03
 const TARGET_WEIGHT = 0.5
 
 export const MAX_SPEED = 0.2
@@ -20,7 +21,7 @@ export default function flock(boid, neighbours, leader) {
     .add(cohesion)
     .add(targeting)
     // Slow the acceleration down by a big factor
-    .divideScalar(200)
+    .divideScalar(100)
 
   return { acceleration, separation, alignment, cohesion }
 }
@@ -28,7 +29,7 @@ export default function flock(boid, neighbours, leader) {
 function target(boid, leader) {
   const distance = boid.position.distanceTo(leader.position)
 
-  if (!leader || distance < 0 || distance > TARGET_RADIUS) {
+  if (!leader || distance > TARGET_RADIUS) {
     return new Vector3(0, 0, 0)
   }
 
@@ -44,7 +45,7 @@ function target(boid, leader) {
 function cohere(boid, neighbours) {
   const flockMembers = neighbours.filter(neighbour => {
     const distance = boid.position.distanceTo(neighbour.position)
-    return distance > 0 && distance < NEIGHBOUR_RADIUS
+    return distance < NEIGHBOUR_RADIUS
   })
 
   if (flockMembers.length === 0) {
@@ -54,12 +55,9 @@ function cohere(boid, neighbours) {
   const centerOfMass = flockMembers
     .reduce((acc, neighbour) => acc.add(neighbour.position), new Vector3())
     .divideScalar(flockMembers.length)
-    .normalize()
+    .divideScalar(100)
 
-  const cohesion = centerOfMass
-    .clone()
-    .sub(boid.position)
-    .normalize()
+  const cohesion = centerOfMass.sub(boid.position).normalize()
 
   return cohesion
 }
@@ -67,7 +65,7 @@ function cohere(boid, neighbours) {
 function align(boid, neighbours) {
   const flockMembers = neighbours.filter(neighbour => {
     const distance = boid.position.distanceTo(neighbour.position)
-    return distance > 0 && distance < NEIGHBOUR_RADIUS
+    return distance < NEIGHBOUR_RADIUS
   })
 
   if (flockMembers.length === 0) {
@@ -77,29 +75,24 @@ function align(boid, neighbours) {
   return flockMembers
     .reduce((acc, neighbour) => acc.add(neighbour.velocity), new Vector3())
     .divideScalar(flockMembers.length)
-    .normalize()
 }
 
 function separate(boid, neighbours) {
   const flockMembers = neighbours.filter(neighbour => {
     const distance = boid.position.distanceTo(neighbour.position)
-    return distance > 0 && distance < NEIGHBOUR_RADIUS
+    return distance < SEPARATE_RADIUS
   })
 
   if (flockMembers.length === 0) {
     return new Vector3(0, 0, 0)
   }
 
-  return (
-    flockMembers
-      .reduce((acc, neighbour) => {
-        return boid.position
-          .clone()
-          .sub(neighbour.position)
-          .add(acc)
-      }, new Vector3())
-      .divideScalar(flockMembers.length)
-      // .multiplyScalar(-1)
-      .normalize()
-  )
+  return flockMembers
+    .reduce((acc, neighbour) => {
+      return boid.position
+        .clone()
+        .sub(neighbour.position)
+        .add(acc)
+    }, new Vector3())
+    .divideScalar(flockMembers.length)
 }
