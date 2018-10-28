@@ -1,12 +1,12 @@
 import { Vector3 } from 'three'
 
-const SEPARATE_RADIUS = 2
-const NEIGHBOUR_RADIUS = 10
-const TARGET_RADIUS = 5
+const SEPARATE_RADIUS = 3
+const NEIGHBOUR_RADIUS = 15
+const TARGET_RADIUS = 10
 const SEPARATION_WEIGHT = 2
-const ALIGNMENT_WEIGHT = 2
+const ALIGNMENT_WEIGHT = 10
 const COHESION_WEIGHT = 0.03
-const TARGET_WEIGHT = 0.5
+const TARGET_WEIGHT = 0.9
 
 export const MAX_SPEED = 0.2
 
@@ -21,7 +21,7 @@ export default function flock(boid, neighbours, leader) {
     .add(cohesion)
     .add(targeting)
     // Slow the acceleration down by a big factor
-    .divideScalar(100)
+    .divideScalar(400)
 
   return { acceleration, separation, alignment, cohesion }
 }
@@ -33,11 +33,7 @@ function target(boid, leader) {
     return new Vector3(0, 0, 0)
   }
 
-  const targeting = boid.position
-    .clone()
-    .sub(leader.position)
-    .normalize()
-    .multiplyScalar(-1)
+  const targeting = leader.position.clone().sub(boid.position)
 
   return targeting
 }
