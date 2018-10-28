@@ -8,6 +8,8 @@ import createPlayer from './rendering/createPlayer'
 
 import flock, { MAX_SPEED } from './flock'
 
+import GameOver from './GameOver'
+
 import './Game.css'
 
 const worldWidth = 200
@@ -18,8 +20,11 @@ export default class Game extends Component {
   constructor(props) {
     super(props)
     this.ref = createRef()
+    this.votingRef = createRef()
+
     this.state = {
       score: 0,
+      gameOver: false,
     }
 
     this.player = {
@@ -76,12 +81,6 @@ export default class Game extends Component {
         mesh.rotation.z = angle
       })
 
-      const nearby = this.creatures.filter(creature => this.player.position.distanceTo(creature.position) < 20)
-
-      if (nearby.length !== this.state.score) {
-        this.setState({ score: nearby.length })
-      }
-
       this.player.velocity.add(this.player.acceleration).clampScalar(-this.player.maxSpeed, this.player.maxSpeed)
 
       this.player.position.add(this.player.velocity)
@@ -98,8 +97,16 @@ export default class Game extends Component {
 
       renderer.render(scene, camera)
 
-      requestAnimationFrame(animate)
+      const score = this.creatures.filter(creature => this.player.position.distanceTo(creature.position) < 20).length
+      const gameOver = score === this.creatures.length
+
+      this.setState({ score, gameOver })
+
+      if (!gameOver) {
+        requestAnimationFrame(animate)
+      }
     }
+
     animate()
 
     const handleMove = e => {
@@ -127,6 +134,7 @@ export default class Game extends Component {
         <div className="score">
           {this.state.score} / {this.creatures.length}
         </div>
+        {this.state.gameOver && <GameOver />}
         <canvas id="game" ref={this.ref} />
       </>
     )

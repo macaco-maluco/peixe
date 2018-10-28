@@ -1,0 +1,17 @@
+.gameOver {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: rgba(20, 43, 56, 0.9);
+  padding: 2rem;
+  top: 10rem;
+  left: 10rem;
+  right: 10rem;
+  bottom: 10rem;
+
+  font-size: 2rem;
+  text-align: center;
+  color: #f0eff1;
+  align-items: center;
+  justify-content: center;
+}
