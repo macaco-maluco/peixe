@@ -59,7 +59,7 @@ function createHead(fish) {
   const geometry = new THREE.BoxGeometry(fish.headLength, 1, 1)
   const material = new THREE.MeshPhongMaterial({
     color: fish.headColor,
-    shading: THREE.FlatShading,
+    flatShading: true,
   })
 
   const mesh = new THREE.Mesh(geometry, material)
@@ -72,7 +72,7 @@ function createBody(fish) {
   const geometry = new THREE.BoxGeometry(fish.bodyLength, 0.8, 0.8)
   const material = new THREE.MeshPhongMaterial({
     color: fish.bodyColor,
-    shading: THREE.FlatShading,
+    flatShading: true,
   })
 
   const mesh = new THREE.Mesh(geometry, material)
@@ -87,7 +87,7 @@ function createTail(fish) {
   const baseGeometry = new THREE.BoxGeometry(fish.tailLength, fish.tailLength, fish.tailLength)
   const baseMaterial = new THREE.MeshPhongMaterial({
     color: fish.tailColor,
-    shading: THREE.FlatShading,
+    flatShading: true,
   })
 
   const baseMesh = new THREE.Mesh(baseGeometry, baseMaterial)
@@ -96,7 +96,7 @@ function createTail(fish) {
   const topGeometry = new THREE.BoxGeometry(3 * fish.tailLength, 0.5 * fish.tailLength, 0.05)
   const topMaterial = new THREE.MeshPhongMaterial({
     color: fish.tailColor,
-    shading: THREE.FlatShading,
+    flatShading: true,
   })
 
   const topMesh = new THREE.Mesh(topGeometry, topMaterial)
@@ -106,7 +106,7 @@ function createTail(fish) {
   const bottomGeometry = new THREE.BoxGeometry(3 * fish.tailLength, 0.5 * fish.tailLength, 0.05)
   const bottomMaterial = new THREE.MeshPhongMaterial({
     color: fish.tailColor,
-    shading: THREE.FlatShading,
+    flatShading: true,
   })
 
   const bottomMesh = new THREE.Mesh(bottomGeometry, bottomMaterial)
@@ -127,7 +127,7 @@ function createFlap(fish) {
     const topGeometry = new THREE.BoxGeometry(width, 0.5 * fish.flapLength, 0.05)
     const topMaterial = new THREE.MeshPhongMaterial({
       color: fish.flapColor,
-      shading: THREE.FlatShading,
+      flatShading: true,
     })
 
     const topMesh = new THREE.Mesh(topGeometry, topMaterial)
@@ -140,7 +140,7 @@ function createFlap(fish) {
     const bottomGeometry = new THREE.BoxGeometry(width, 0.5 * fish.flapLength, 0.05)
     const bottomMaterial = new THREE.MeshPhongMaterial({
       color: fish.flapColor,
-      shading: THREE.FlatShading,
+      flatShading: true,
     })
 
     const bottomMesh = new THREE.Mesh(bottomGeometry, bottomMaterial)
@@ -156,7 +156,7 @@ function createFlap(fish) {
   const geometry = new THREE.BoxGeometry(fish.bodyLength * 0.2, fish.flapLength, 0.25)
   const material = new THREE.MeshPhongMaterial({
     color: fish.flapColor,
-    shading: THREE.FlatShading,
+    flatShading: true,
   })
 
   const mesh = new THREE.Mesh(geometry, material)
@@ -170,7 +170,7 @@ function createLeftEye(fish) {
   const geometry = new THREE.BoxGeometry(0.1, 0.16, 0.16)
   const material = new THREE.MeshPhongMaterial({
     color: fish.eyeColor,
-    shading: THREE.FlatShading,
+    flatShading: true,
   })
 
   const mesh = new THREE.Mesh(geometry, material)
@@ -185,7 +185,7 @@ function createRightEye(fish) {
   const geometry = new THREE.BoxGeometry(0.1, 0.16, 0.16)
   const material = new THREE.MeshPhongMaterial({
     color: fish.eyeColor,
-    shading: THREE.FlatShading,
+    flatShading: true,
   })
 
   const mesh = new THREE.Mesh(geometry, material)
