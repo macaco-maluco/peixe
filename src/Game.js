@@ -12,6 +12,7 @@ import './Game.css'
 
 const worldWidth = 200
 const worldHeight = 200
+const PLAYER_MAX_SPEED = MAX_SPEED * 4
 
 export default class Game extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ export default class Game extends Component {
       position: new THREE.Vector3(0, 0, 0),
       velocity: new THREE.Vector3(0.2, 0.4, 0),
       acceleration: new THREE.Vector3(0, 0, 0),
+      maxSpeed: 0,
     }
 
     this.creatures = []
@@ -80,7 +82,7 @@ export default class Game extends Component {
         this.setState({ score: nearby.length })
       }
 
-      this.player.velocity.add(this.player.acceleration).clampScalar(-MAX_SPEED, MAX_SPEED)
+      this.player.velocity.add(this.player.acceleration).clampScalar(-this.player.maxSpeed, this.player.maxSpeed)
 
       this.player.position.add(this.player.velocity)
       worldColision(this.player)
@@ -102,11 +104,15 @@ export default class Game extends Component {
 
     window.addEventListener('mousemove', e => {
       this.player.acceleration.x =
-        ((e.clientX - window.innerWidth / 2) / (window.innerWidth / 2) / (window.innerWidth / 2)) * 2
+        ((e.clientX - window.innerWidth / 2) / (window.innerWidth / 2) / (window.innerWidth / 2)) * 4
       this.player.acceleration.y =
-        (-((e.clientY - window.innerHeight / 2) / (window.innerHeight / 2)) / (window.innerHeight / 2)) * 2
+        (-((e.clientY - window.innerHeight / 2) / (window.innerHeight / 2)) / (window.innerHeight / 2)) * 4
 
-      console.log(this.player.acceleration)
+      const center = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2)
+      const mouse = new THREE.Vector2(e.clientX, e.clientY)
+      const corner = new THREE.Vector2()
+
+      this.player.maxSpeed = (center.distanceTo(mouse) / center.distanceTo(corner)) * PLAYER_MAX_SPEED
     })
   }
 
