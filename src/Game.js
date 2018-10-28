@@ -114,6 +114,8 @@ export default class Game extends Component {
     animate()
 
     const handleMove = e => {
+      e.preventDefault()
+
       const touch = e.touches ? e.touches[0] : e
 
       this.player.acceleration.x =
@@ -128,8 +130,13 @@ export default class Game extends Component {
       this.player.maxSpeed = (center.distanceTo(mouse) / center.distanceTo(corner)) * PLAYER_MAX_SPEED
     }
 
-    window.addEventListener('touchmove', handleMove, false)
-    window.addEventListener('mousemove', handleMove, false)
+    const disableScroll = e => {
+      e.preventDefault()
+    }
+
+    window.addEventListener('touchstart', disableScroll)
+    window.addEventListener('touchmove', handleMove)
+    window.addEventListener('mousemove', handleMove)
   }
 
   render() {
