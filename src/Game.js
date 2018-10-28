@@ -23,7 +23,7 @@ export default class Game extends Component {
 
     this.player = {
       position: new THREE.Vector3(0, 0, 0),
-      velocity: new THREE.Vector3(0.01, 0.01, 0),
+      velocity: new THREE.Vector3(0.2, 0.4, 0),
     }
 
     this.creatures = []
@@ -60,25 +60,7 @@ export default class Game extends Component {
         creature.velocity.add(acceleration).clampScalar(-MAX_SPEED, MAX_SPEED)
         creature.position.add(creature.velocity)
 
-        if (creature.position.x < -worldWidth / 2) {
-          creature.velocity.x = MAX_SPEED
-          creature.velocity.y = 0
-        }
-
-        if (creature.position.x > worldWidth / 2) {
-          creature.velocity.x = -MAX_SPEED
-          creature.velocity.y = 0
-        }
-
-        if (creature.position.y < -worldWidth / 2) {
-          creature.velocity.x = 0
-          creature.velocity.y = MAX_SPEED
-        }
-
-        if (creature.position.y > worldWidth / 2) {
-          creature.velocity.x = 0
-          creature.velocity.y = -MAX_SPEED
-        }
+        worldColision(creature)
 
         const angle = new THREE.Vector2(creature.velocity.x, creature.velocity.y).angle() + Math.PI
 
@@ -89,13 +71,13 @@ export default class Game extends Component {
       })
 
       const nearby = this.creatures.filter(creature => this.player.position.distanceTo(creature.position) < 20)
-      // console.log(nearby)
-      //
+
       if (nearby.length !== this.state.score) {
         this.setState({ score: nearby.length })
       }
 
       this.player.position.add(this.player.velocity)
+      worldColision(this.player)
 
       camera.position.x = this.player.position.x
       camera.position.y = this.player.position.y
@@ -119,5 +101,15 @@ export default class Game extends Component {
         <canvas id="game" ref={this.ref} />
       </>
     )
+  }
+}
+
+function worldColision(entity) {
+  if (entity.position.x < -worldWidth / 2 || entity.position.x > worldWidth / 2) {
+    entity.velocity.x = -entity.velocity.x
+  }
+
+  if (entity.position.y < -worldWidth / 2 || entity.position.y > worldWidth / 2) {
+    entity.velocity.y = -entity.velocity.y
   }
 }
