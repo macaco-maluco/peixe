@@ -1,7 +1,11 @@
+html {
+  font-family: 'VT323', monospace;
+  font-size: 1vw;
+}
+
 body {
   margin: 0;
   overflow: hidden;
-  font-family: 'VT323', monospace;
 }
 
 canvas {
