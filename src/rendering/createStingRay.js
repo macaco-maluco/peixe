@@ -33,7 +33,7 @@ function createTail() {
 }
 
 function createLeftEye() {
-  const geometry = new THREE.BoxGeometry(0.1, 0.16, 0.16)
+  const geometry = new THREE.BoxGeometry(0.15, 0.15, 0.15)
   const material = new THREE.MeshPhongMaterial({
     color: 0x191d24,
     flatShading: true,
@@ -41,14 +41,14 @@ function createLeftEye() {
 
   const mesh = new THREE.Mesh(geometry, material)
   mesh.position.x = -0.5
-  mesh.position.y = 0.25
-  mesh.position.z = 1
+  mesh.position.y = 0.3
+  mesh.position.z = 0.15
 
   return mesh
 }
 
 function createRightEye() {
-  const geometry = new THREE.BoxGeometry(0.1, 0.16, 0.16)
+  const geometry = new THREE.BoxGeometry(0.15, 0.15, 0.15)
   const material = new THREE.MeshPhongMaterial({
     color: 0x191d24,
     flatShading: true,
@@ -56,8 +56,8 @@ function createRightEye() {
 
   const mesh = new THREE.Mesh(geometry, material)
   mesh.position.x = -0.5
-  mesh.position.y = -0.25
-  mesh.position.z = 1
+  mesh.position.y = -0.3
+  mesh.position.z = 0.15
 
   return mesh
 }
