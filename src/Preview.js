@@ -13,18 +13,17 @@ export default class Preview extends Component {
 
   componentDidMount() {
     const { camera, scene, renderer } = setupRenderer(this.ref.current)
+    const { rotate, fish, player, stingRay } = this.props
 
     camera.position.z = 4
 
-    const mesh = this.props.player
-      ? createPlayer()
-      : this.props.stingRay
-        ? createStingRay()
-        : createFish(this.props.fish)
+    const mesh = player ? createPlayer() : stingRay ? createStingRay() : createFish(fish)
     scene.add(mesh)
 
     function animate() {
-      mesh.rotation.y -= -0.01
+      if (rotate) {
+        mesh.rotation.y -= -0.01
+      }
 
       renderer.render(scene, camera)
 
