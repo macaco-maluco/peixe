@@ -17,7 +17,10 @@ export default class Game extends Component {
   componentDidMount() {
     const { camera, scene, renderer } = setupRenderer(this.ref.current)
 
-    const pondMesh = createPond()
+    const worldWidth = 200
+    const worldHeight = 200
+
+    const pondMesh = createPond(worldWidth, worldHeight)
     scene.add(pondMesh)
 
     const playerMesh = createPlayer()
@@ -29,9 +32,13 @@ export default class Game extends Component {
     }
 
     const fishes = []
-    for (var i = 0; i < 50; i++) {
+    for (var i = 0; i < 100; i++) {
       fishes.push({
-        position: new THREE.Vector3(Math.random() * 40 - 20, Math.random() * 40 - 20, 0),
+        position: new THREE.Vector3(
+          Math.random() * worldWidth - worldWidth / 2,
+          Math.random() * worldHeight - worldHeight / 2,
+          0,
+        ),
         velocity: new THREE.Vector3(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, 0),
         fishType: Math.floor(Math.random() * 3),
       })
@@ -47,6 +54,26 @@ export default class Game extends Component {
         const { acceleration } = flock(fish, neighbours, player)
         fish.velocity.add(acceleration).clampScalar(-MAX_SPEED, MAX_SPEED)
         fish.position.add(fish.velocity)
+
+        if (fish.position.x < -worldWidth / 2) {
+          fish.velocity.x = MAX_SPEED
+          fish.velocity.y = 0
+        }
+
+        if (fish.position.x > worldWidth / 2) {
+          fish.velocity.x = -MAX_SPEED
+          fish.velocity.y = 0
+        }
+
+        if (fish.position.y < -worldWidth / 2) {
+          fish.velocity.x = 0
+          fish.velocity.y = MAX_SPEED
+        }
+
+        if (fish.position.y > worldWidth / 2) {
+          fish.velocity.x = 0
+          fish.velocity.y = -MAX_SPEED
+        }
 
         const angle = new THREE.Vector2(fish.velocity.x, fish.velocity.y).angle() + Math.PI
 
