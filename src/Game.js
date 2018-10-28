@@ -102,18 +102,23 @@ export default class Game extends Component {
     }
     animate()
 
-    window.addEventListener('mousemove', e => {
+    const handleMove = e => {
+      const touch = e.touches ? e.touches[0] : e
+
       this.player.acceleration.x =
-        ((e.clientX - window.innerWidth / 2) / (window.innerWidth / 2) / (window.innerWidth / 2)) * 4
+        ((touch.clientX - window.innerWidth / 2) / (window.innerWidth / 2) / (window.innerWidth / 2)) * 4
       this.player.acceleration.y =
-        (-((e.clientY - window.innerHeight / 2) / (window.innerHeight / 2)) / (window.innerHeight / 2)) * 4
+        (-((touch.clientY - window.innerHeight / 2) / (window.innerHeight / 2)) / (window.innerHeight / 2)) * 4
 
       const center = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2)
-      const mouse = new THREE.Vector2(e.clientX, e.clientY)
+      const mouse = new THREE.Vector2(touch.clientX, touch.clientY)
       const corner = new THREE.Vector2()
 
       this.player.maxSpeed = (center.distanceTo(mouse) / center.distanceTo(corner)) * PLAYER_MAX_SPEED
-    })
+    }
+
+    window.addEventListener('touchmove', handleMove, false)
+    window.addEventListener('mousemove', handleMove, false)
   }
 
   render() {
