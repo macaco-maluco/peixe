@@ -43,6 +43,7 @@ export default class Game extends Component {
 
     const player = {
       position: new THREE.Vector3(0, 0, 0),
+      velocity: new THREE.Vector3(0.01, 0.01, 0),
     }
 
     const fishes = []
@@ -72,6 +73,8 @@ export default class Game extends Component {
         mesh.position.y = fish.position.y
         mesh.rotation.z = angle
       })
+
+      player.position.add(player.velocity)
 
       camera.position.x = player.position.x
       camera.position.y = player.position.y
