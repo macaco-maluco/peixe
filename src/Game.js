@@ -82,8 +82,11 @@ export default class Game extends Component {
       camera.position.x = this.player.position.x
       camera.position.y = this.player.position.y
 
+      const playerAngle = new THREE.Vector2(this.player.velocity.x, this.player.velocity.y).angle() + Math.PI
+
       playerMesh.position.x = this.player.position.x
       playerMesh.position.y = this.player.position.y
+      playerMesh.rotation.z = playerAngle
 
       renderer.render(scene, camera)
 
