@@ -2,7 +2,7 @@ import { Vector3 } from 'three'
 
 const SEPARATE_RADIUS = 3
 const NEIGHBOUR_RADIUS = 15
-const TARGET_RADIUS = 10
+const TARGET_RADIUS = 20
 const SEPARATION_WEIGHT = 2
 const ALIGNMENT_WEIGHT = 10
 const COHESION_WEIGHT = 0.03
