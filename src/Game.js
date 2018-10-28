@@ -24,6 +24,7 @@ export default class Game extends Component {
     this.player = {
       position: new THREE.Vector3(0, 0, 0),
       velocity: new THREE.Vector3(0.2, 0.4, 0),
+      acceleration: new THREE.Vector3(0, 0, 0),
     }
 
     this.creatures = []
@@ -34,10 +35,13 @@ export default class Game extends Component {
           Math.random() * worldHeight - worldHeight / 2,
           0,
         ),
-        velocity: new THREE.Vector3(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, 0),
+        velocity: new THREE.Vector3(0, 0, 0),
+
         creatureType: Math.floor(Math.random() * 4),
       })
     }
+
+    this.mousePosition = [window.width / 2, window.height / 2]
   }
 
   componentDidMount() {
@@ -76,6 +80,8 @@ export default class Game extends Component {
         this.setState({ score: nearby.length })
       }
 
+      this.player.velocity.add(this.player.acceleration).clampScalar(-MAX_SPEED, MAX_SPEED)
+
       this.player.position.add(this.player.velocity)
       worldColision(this.player)
 
@@ -93,6 +99,15 @@ export default class Game extends Component {
       requestAnimationFrame(animate)
     }
     animate()
+
+    window.addEventListener('mousemove', e => {
+      this.player.acceleration.x =
+        ((e.clientX - window.innerWidth / 2) / (window.innerWidth / 2) / (window.innerWidth / 2)) * 2
+      this.player.acceleration.y =
+        (-((e.clientY - window.innerHeight / 2) / (window.innerHeight / 2)) / (window.innerHeight / 2)) * 2
+
+      console.log(this.player.acceleration)
+    })
   }
 
   render() {
