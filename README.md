@@ -1,5 +1,19 @@
 # Peixe
 
+![Trum](https://raw.githubusercontent.com/Hackbit/nko2018-peixe/master/screenshot.png)
+
+With the mouse or touch (it works on phones and tablets) you control the direction and speed that your submarine navigates in this pond.
+
+Native fishes are doing their business, but they feel very interested in your yellow vessel.
+
+Your goal is to make all of the fishes in the pond to join your big shoal!
+
+## Development
+
+```
+yarn start
+```
+
 ## Resources
 
 - http://www.vergenet.net/~conrad/boids/pseudocode.html
