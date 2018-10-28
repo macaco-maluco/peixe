@@ -27,9 +27,7 @@ export default function flock(boid, neighbours, leader) {
 }
 
 function target(boid, leader) {
-  const distance = boid.position.distanceTo(leader.position)
-
-  if (!leader || distance > TARGET_RADIUS) {
+  if (!leader || (leader && boid.position.distanceTo(leader.position) > TARGET_RADIUS)) {
     return new Vector3(0, 0, 0)
   }
 

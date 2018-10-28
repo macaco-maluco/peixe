@@ -12,6 +12,7 @@ import './Game.css'
 
 const worldWidth = 200
 const worldHeight = 200
+const PLAYER_MAX_SPEED = MAX_SPEED * 4
 
 export default class Game extends Component {
   constructor(props) {
@@ -24,6 +25,8 @@ export default class Game extends Component {
     this.player = {
       position: new THREE.Vector3(0, 0, 0),
       velocity: new THREE.Vector3(0.2, 0.4, 0),
+      acceleration: new THREE.Vector3(0, 0, 0),
+      maxSpeed: 0,
     }
 
     this.creatures = []
@@ -34,10 +37,13 @@ export default class Game extends Component {
           Math.random() * worldHeight - worldHeight / 2,
           0,
         ),
-        velocity: new THREE.Vector3(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, 0),
+        velocity: new THREE.Vector3(0, 0, 0),
+
         creatureType: Math.floor(Math.random() * 4),
       })
     }
+
+    this.mousePosition = [window.width / 2, window.height / 2]
   }
 
   componentDidMount() {
@@ -76,6 +82,8 @@ export default class Game extends Component {
         this.setState({ score: nearby.length })
       }
 
+      this.player.velocity.add(this.player.acceleration).clampScalar(-this.player.maxSpeed, this.player.maxSpeed)
+
       this.player.position.add(this.player.velocity)
       worldColision(this.player)
 
@@ -93,6 +101,24 @@ export default class Game extends Component {
       requestAnimationFrame(animate)
     }
     animate()
+
+    const handleMove = e => {
+      const touch = e.touches ? e.touches[0] : e
+
+      this.player.acceleration.x =
+        ((touch.clientX - window.innerWidth / 2) / (window.innerWidth / 2) / (window.innerWidth / 2)) * 4
+      this.player.acceleration.y =
+        (-((touch.clientY - window.innerHeight / 2) / (window.innerHeight / 2)) / (window.innerHeight / 2)) * 4
+
+      const center = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2)
+      const mouse = new THREE.Vector2(touch.clientX, touch.clientY)
+      const corner = new THREE.Vector2()
+
+      this.player.maxSpeed = (center.distanceTo(mouse) / center.distanceTo(corner)) * PLAYER_MAX_SPEED
+    }
+
+    window.addEventListener('touchmove', handleMove, false)
+    window.addEventListener('mousemove', handleMove, false)
   }
 
   render() {
