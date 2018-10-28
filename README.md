@@ -1,6 +1,6 @@
 # Peixe
 
-![Trum](https://raw.githubusercontent.com/Hackbit/nko2018-peixe/master/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/Hackbit/nko2018-peixe/master/screenshot.png)
 
 With the mouse or touch (it works on phones and tablets) you control the direction and speed that your submarine navigates in this pond.
 
