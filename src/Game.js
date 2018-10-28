@@ -42,7 +42,11 @@ export default class Game extends Component {
           Math.random() * worldHeight - worldHeight / 2,
           0,
         ),
-        velocity: new THREE.Vector3(0, 0, 0),
+        velocity: new THREE.Vector3(
+          Math.random() * 2 * MAX_SPEED - MAX_SPEED / 2,
+          Math.random() * 2 * MAX_SPEED - MAX_SPEED / 2,
+          0,
+        ),
 
         creatureType: Math.floor(Math.random() * 5),
       })
