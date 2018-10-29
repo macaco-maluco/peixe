@@ -19,8 +19,15 @@ export default function setupRenderer(canvas) {
   function handleWindowResize() {
     const height = window.innerHeight
     const width = window.innerWidth
+    const aspect = width / height
+
     renderer.setSize(width, height)
-    camera.aspect = width / height
+
+    camera.left = (frustumSize * aspect) / -2
+    camera.right = (frustumSize * aspect) / 2
+    camera.top = frustumSize / 2
+    camera.bottom = frustumSize / -2
+
     camera.updateProjectionMatrix()
   }
 
