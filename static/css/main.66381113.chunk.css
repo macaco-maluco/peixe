@@ -1,0 +1,2 @@
+html{font-family:VT323,monospace;font-size:1vw}body,html{overflow:hidden}body{margin:0}canvas{width:100%;height:100%}a{text-decoration:none;color:#fb7813;margin:1rem 0}.gameOver{display:flex;flex-direction:column;background-color:rgba(20,43,56,.9);padding:2rem;top:10rem;left:10rem;right:10rem;bottom:10rem;font-size:2rem;color:#f0eff1;align-items:center;justify-content:center}.gameOver,.score{position:absolute;text-align:center}.score{top:0;left:0;right:0;color:#fff;font-size:4rem}#game{touch-action:none}
+/*# sourceMappingURL=main.66381113.chunk.css.map */
