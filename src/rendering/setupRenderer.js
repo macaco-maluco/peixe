@@ -3,7 +3,7 @@ import * as THREE from 'three'
 export default function setupRenderer(canvas) {
   const scene = new THREE.Scene()
   const aspect = window.innerWidth / window.innerHeight
-  const frustumSize = 75
+  const frustumSize = 40
   const camera = new THREE.OrthographicCamera(
     (frustumSize * aspect) / -2,
     (frustumSize * aspect) / 2,
