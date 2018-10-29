@@ -82,6 +82,7 @@ export default class Game extends Component {
         const mesh = creatureMeshes[index]
         mesh.position.x = creature.position.x
         mesh.position.y = creature.position.y
+        mesh.position.z = index * 0.001
         mesh.rotation.z = angle
       })
 
